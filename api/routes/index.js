@@ -1,0 +1,20 @@
+const router = require('express').Router()
+const admin =  require('./admin')
+const product = require('./product')
+const category = require('./category')
+const person = require('./customer')
+const order = require('./order')
+const isAdmin = require('../miiddleware/isAdmin')
+const auth = require('../../utils/auth')
+const customerController = require('../controllers/customer')
+const {errorWrapper} = require('../../utils/error')
+const {routeName} = require('../miiddleware/routeName')
+
+router.use('/admin',routeName('admin'),person)
+router.use('/category',auth,isAdmin,category)
+router.use('/product',auth,isAdmin,product)
+router.use('/customer',routeName('customer'),person)
+router.use('/order',auth,order)
+router.post('/login',errorWrapper(customerController.login))
+
+module.exports = router
